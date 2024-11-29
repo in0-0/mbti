@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MBTI Test</title>
+</head>
+<body>
+    <h1>MBTI Test</h1>
+    <button onclick="getQuestion()">질문 가져오기</button>
+    <div id="question"></div>
+    <div id="options"></div>
+
+    <script>
+        let currentQuestionId = 0;
+
+        async function getQuestion() {
+            const response = await fetch(`/question/${currentQuestionId}`);
+            const question = await response.json();
+            document.getElementById('question').innerText = question.text;
+            
+            // 예/아니오 버튼 추가
+            const optionsDiv = document.getElementById('options');
+                optionsDiv.innerHTML = `
+                    <button onclick="submitAnswer(${question.id}, '예')">예</button>
+                    <button onclick="submitAnswer(${question.id}, '아니오')">아니오</button>
+                `;
+        }
+
+        async function submitAnswer(questionId, answer) {
+            try {
+                // 응답 데이터 서버에 전송
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: questionId, answer: answer })
+                });
+
+                const result = await response.json();
+                currentQuestionId++;
+                alert(result.message, currentQuestionId); // 응답 메시지 표시
+                getQuestion();
+            } catch (error) {
+                console.error('응답 전송 실패:', error);
+            }
+        }
+    </script>
+</body>
+</html>
