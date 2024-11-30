@@ -15,7 +15,7 @@
         async function getQuestion() {
             const response = await fetch(`/question/${currentQuestionId}`);
             const question = await response.json();
-            document.getElementById('question').innerText = question.text;
+            document.getElementById('question').innerText = question.question;
             
             // 예/아니오 버튼 추가
             const optionsDiv = document.getElementById('options');
@@ -37,11 +37,15 @@
                 const result = await response.json();
                 currentQuestionId++;
                 alert(result.message, currentQuestionId); // 응답 메시지 표시
+                
+
                 getQuestion();
             } catch (error) {
                 console.error('응답 전송 실패:', error);
             }
         }
+
+        document.addEventListener('DOMContentLoaded', getQuestion);
     </script>
 </body>
 </html>
