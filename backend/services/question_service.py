@@ -1,4 +1,4 @@
-from model.question_model import Question
+from backend.model.question_model import Question
 
 
 class QuestionService:

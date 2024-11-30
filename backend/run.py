@@ -1,5 +1,6 @@
 from app import create_app
-from services.question_service import QuestionService
+
+from backend.services.question_service import QuestionService
 
 if __name__ == "__main__":
     question_service = QuestionService()  # 서비스 객체 생성

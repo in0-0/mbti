@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from pydantic import BaseModel, ValidationError
-from services.question_service import QuestionService
+
+from backend.services.question_service import QuestionService
 
 
 class Answer(BaseModel):
@@ -20,7 +21,7 @@ def create_app(question_service: QuestionService) -> Flask:
     def get_question(question_id):
         try:
             question = question_service.get_question_by_id(question_id)
-            return jsonify(question.model_dump())
+            return jsonify(question)
         except ValueError as e:
             return jsonify({"error": str(e)}), 404
 
